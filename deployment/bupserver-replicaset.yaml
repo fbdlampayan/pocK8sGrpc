@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: my-server
+  labels:
+    name: my-server
+spec:
+  replicas: 3
+  selector:
+    name: my-server
+  template:
+    metadata:
+      labels:
+        name: my-server
+    spec:
+      containers:
+      - name: my-server
+        image: fbdl.registry/poc/server:v1
+        ports:
+        - containerPort: 7777
+

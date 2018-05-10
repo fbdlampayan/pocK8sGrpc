@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "fbdl.poc.grpc";
+option java_outer_classname = "poc";
+
+package poc;
+
+service PocService {
+   rpc simpleService(ServiceRequest) returns (ServiceResponse) {}
+   rpc simpleServiceBreak(ServiceRequest) returns (ServiceResponse) {}
+
+   rpc bidiService(stream ServiceRequest) returns (stream ServiceResponse) {}
+   rpc bidiServiceBreak(stream ServiceRequest) returns (stream ServiceResponse) {}
+}
+
+message ServiceRequest {
+   string requestMessage = 1;
+   string secondField = 2;
+   reserved 3 to 4;
+   string anotherField = 5;
+}
+
+message ServiceResponse {
+   string responseMessage = 1;
+}
