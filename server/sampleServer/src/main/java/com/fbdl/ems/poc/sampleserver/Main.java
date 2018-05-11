@@ -31,8 +31,8 @@ public class Main {
 
     private void initializeServer() throws IOException, InterruptedException {
         NettyServerBuilder.forPort(7777)
-                .useTransportSecurity(new File("/home/jboss/servercert.pem"), new File("/home/jboss/serverkey.pem"))
-                .keepAliveTime(30, TimeUnit.SECONDS)
+                //.useTransportSecurity(new File("C:\\VBXShared\\pocK8sGrpc\\server\\sampleServer\\certs\\servercert.pem"), new File("C:\\VBXShared\\pocK8sGrpc\\server\\sampleServer\\certs\\serverkey.pem"))//(new File("/home/jboss/servercert.pem"), new File("/home/jboss/serverkey.pem"))
+                //.keepAliveTime(30, TimeUnit.SECONDS)
                 .addService(new PocServices())
                 .executor(Executors.newFixedThreadPool(32))
                 .build()

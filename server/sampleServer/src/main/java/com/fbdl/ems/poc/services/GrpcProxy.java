@@ -13,6 +13,10 @@ import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+//https://github.com/ejona86/grpc-java/blob/grpc-proxy/examples/src/main/java/io/grpc/examples/grpcproxy/GrpcProxy.java
+//https://groups.google.com/forum/#!topic/grpc-io/DhqklrZ03fw
+//grpc-proxy bookmark dir
+//https://www.nexthink.com/blog/grpc-java-generic-gatewayreverse-proxy/
 /** A grpc-level proxy. */
 public class GrpcProxy<ReqT, RespT> implements ServerCallHandler<ReqT, RespT> {
   private static final Logger logger = Logger.getLogger(GrpcProxy.class.getName());
@@ -24,10 +28,9 @@ public class GrpcProxy<ReqT, RespT> implements ServerCallHandler<ReqT, RespT> {
   }
 
   @Override
-  public ServerCall.Listener<ReqT> startCall(
-      ServerCall<ReqT, RespT> serverCall, Metadata headers) {
-    ClientCall<ReqT, RespT> clientCall
-        = channel.newCall(serverCall.getMethodDescriptor(), CallOptions.DEFAULT);
+  public ServerCall.Listener<ReqT> startCall(ServerCall<ReqT, RespT> serverCall, Metadata headers) {
+    System.out.println("startcall " + headers.toString());
+    ClientCall<ReqT, RespT> clientCall = channel.newCall(serverCall.getMethodDescriptor(), CallOptions.DEFAULT);
     CallProxy<ReqT, RespT> proxy = new CallProxy<ReqT, RespT>(serverCall, clientCall);
     clientCall.start(proxy.clientCallListener, headers);
     serverCall.request(1);
@@ -144,11 +147,13 @@ public class GrpcProxy<ReqT, RespT> implements ServerCallHandler<ReqT, RespT> {
     private final ServerCallHandler<byte[], byte[]> handler;
 
     public Registry(ServerCallHandler<byte[], byte[]> handler) {
+        System.out.println("handler");
       this.handler = handler;
     }
 
     @Override
     public ServerMethodDefinition<?,?> lookupMethod(String methodName, String authority) {
+        System.out.println("lookupMethod " + methodName);
       MethodDescriptor<byte[], byte[]> methodDescriptor
           = MethodDescriptor.newBuilder(byteMarshaller, byteMarshaller)
           .setFullMethodName(methodName)

@@ -31,8 +31,9 @@ public class SampleGrpcClient {
 
     public SampleGrpcClient(String serviceName, int servicePort) throws SSLException {
         channel = NettyChannelBuilder.forAddress(serviceName, servicePort)
-                                    .sslContext(GrpcSslContexts.forClient().trustManager(new File("/home/fbdl/Desktop/pocK8sGrpc/client/sampleClient/certs/servercert.pem")).build())
-                                    .build();
+                                    //.sslContext(GrpcSslContexts.forClient().trustManager(new File("C:\\VBXShared\\pocK8sGrpc\\client\\sampleClient\\certs\\servercert.pem")).build())
+                                     .usePlaintext(true)
+                                     .build();
         serverStub = PocServiceGrpc.newBlockingStub(channel);
         serverAsyncStub = PocServiceGrpc.newStub(channel);
     }
